@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+* {
+ font-size: 100%;
+ font-family: Calibri;
+}
+#quote-container {
+            position: absolute;
+            z-index: 999;
+            margin: 0 auto;
+            text-align: center;
+            width: 99%;
+        }
+#panel {
+            background: url(../images/article_bg.png) repeat #3D3D3D;
+            -webkit-box-shadow: inset 0 12px 20px -12px #000;
+               -moz-box-shadow: inset 0 12px 20px -12px #000;
+                    box-shadow: inset 0 12px 20px -12px #000;
+            height: 32px;
+            display: none;
+            -webkit-border-radius-bottomright: 15px;
+            -moz-border-radius-bottomright: 15px;
+            border-bottom-right-radius: 15px;
+            -webkit-border-radius-bottomleft: 15px;
+            -moz-border-radius-bottomleft: 15px;
+            border-bottom-left-radius: 15px;
+        }
+
+#quote-form {
+            
+            padding: 0;
+            position:  relative;
+            z-index: 999;
+            height: 295px;
+            border: 1px solid #666;
+            background: #b7b7b7;
+            background: #7f7f7f;
+            background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMTAwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjElIiBzdG9wLWNvbG9yPSIjN2Y3ZjdmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzU0NTQ1NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+            background: -moz-linear-gradient(45deg,  #7f7f7f 1%, #545454 100%);
+            background: -webkit-gradient(linear, left bottom, right top, color-stop(1%,#7f7f7f), color-stop(100%,#545454));
+            background: -webkit-linear-gradient(45deg,  #7f7f7f 1%,#545454 100%);
+            background: -o-linear-gradient(45deg,  #7f7f7f 1%,#545454 100%);
+            background: -ms-linear-gradient(45deg,  #7f7f7f 1%,#545454 100%);
+            background: linear-gradient(45deg,  #7f7f7f 1%,#545454 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7f7f7f', endColorstr='#545454',GradientType=1 );
+        }
+
+#quotes-button {
+       margin-right:1em;
+	   margin-top:-1em;
+        width: 150px;
+        height: 0px;
+        padding: 0;
+		float:right;
+		font:italic bold 12px/30px Georgia, serif;
+		
+    }
+    
+    #quotes-button a {
+        cursor: pointer;
+    }
+
+
+</style>
+<title>Bangalore Crime Mapping</title>
+<link rel=stylesheet href=leaflet.css />
+<link rel="stylesheet" href="../dist/leaflet.print.css"/>
+<script src=http://cdn.leafletjs.com/leaflet-0.6.3/leaflet.js></script>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<link rel=stylesheet href=screen.css />
+<link rel=stylesheet href=../dist/MarkerCluster.css />
+<link rel=stylesheet href=../dist/MarkerCluster.Default.css />
+<script src=../dist/leaflet.markercluster-src.js></script>
+<script src="leaflet.print.js"></script>
+<script src=crime_data.js></script>
+<script src=crime_functions.js></script>
+<script src=ps_data.js></script>
+<link rel=stylesheet href=http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css>
+<script src=http://code.jquery.com/jquery-1.9.1.js></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src=http://code.jquery.com/ui/1.10.4/jquery-ui.js></script>
+<link rel=stylesheet href=/resources/demos/style.css>
+<link rel=stylesheet href=http://jqueryui.com/jquery-wp-content/themes/jqueryui.com/style.css>
+<script src="http://apps2.geosmart.co.nz/mapfish-print/pdf/info.json?var=config"></script>
+<script>$(document).ready(function(){$(".btn-slide").click(function(){$("#panel").slideDown(1000);$(this).addClass("active");return true})});$(document).ready(function(){$(".btn-slide").dblclick(function(){$("#panel").slideUp(500);$.addClass("hidden");return true})});$(function(){$("#from_datepicker").datepicker()});</script>
+<script>$(function(){$("#to_datepicker").datepicker()});</script>
+
+    
+    
+    
+<style type=text/css>#header{background-color:#ccc}</style>
+</head>
+<body>
+<div id=header style=width:100%;height:30px>
+<form name=user_options>
+<font style=float:left;margin-left:.5em;margin-top:.3em>Crime types&nbsp&nbsp&nbsp</font>
+<div style=float:left;margin-top:0.3em>
+<img style=float:left;height:20px src=police_icons/black/abduction.png></img> <input style=float:left type=checkbox name=teasing id=teasing value=teasing onclick=tease_filters()><font style=float:left>Abduction &nbsp|&nbsp</font></input>
+<img style=float:left;height:20px src=police_icons/blue/robbery.png></img> <input style=float:left type=checkbox name=roberry id=roberry value=roberry onclick=roberry_filters()><font style=float:left>Roberry &nbsp|&nbsp</font></input>
+<img style=float:left;height:20px src=police_icons/greenish/torture.png></img> <input style=float:left type=checkbox name=assault id=assault value=assault onclick=assault_filters()><font style=float:left>Torture &nbsp|&nbsp</font></input>
+<img style=float:left;height:20px src=police_icons/orange/theft.png></img> <input style=float:left type=checkbox name=thefts id=thefts value=thefts onclick=thefts_filters()><font style=float:left>Thefts &nbsp|&nbsp</font></input>
+<img style=float:left;height:20px src=police_icons/red/blast.png></img> <input style=float:left type=checkbox name=accident id=accident value=accident onclick=accident_filters()><font style=float:left>Accident &nbsp|&nbsp</font></input>
+<img style=float:left;height:20px src=police_icons/violet/crimescene.png></img> <input style=float:left type=checkbox name=murder id=murder value=murder onclick=murder_filters()><font style=float:left>Crime Scene </font></input>
+</div>
+<select id=year_select style="float:left;margin-top:.2em"; margin-top:0.2em" onchange=selectyear()>
+<option>Year wise</option>
+<option value=2013>2013</option>
+<option value=2014>2014</option>
+</select>
+<font style=float:left;margin-top:.3em> &nbsp&nbsp&nbsp&nbspFrom:</font> <input style=float:left;margin:.2em;height:14px;width:80px type=text id=from_datepicker value=DD-MM-YY>
+<font style=float:left;margin-top:.3em>To:</font><input style=float:left;margin:.2em;height:14px;width:80px type=text id=to_datepicker value=DD-MM-YY>
+<input style=float:left;margin-top:.1em;height:22px;width:80px type=button id=search_dates value=Search onclick=searchfor_dates()>
+<font style=float:left;margin-top:.3em> &nbsp&nbsp</font>
+<a href="#" id="bottle" onclick="home()" >   <img style="margin-top:.2em;float:left;height:25px" src="home.png" />
+</a>
+<!-- <input style=float:left;margin-top:.1em;height:22px;width:80px;color:white;background-color:#009933; type=button name=switch checked id=switch value="Home" onclick=home()></input>  -->
+<font style="float:left;font-size:100%;margin-top:.6em;color:green">Home&nbsp</font>
+<input style=float:left;margin-top:.1em;height:22px;width:80px;color:white;background-color:#009933 type=button name=switch checked id=switch value="Clear map" onclick=switches()></input>
+</form>
+</div>
+ 
+
+	<div id="map" style="width:100%;height:595px"></div>
+	
+	<script type="text/javascript">
+
+	
+		
+
+		
+
+
+		var cloudmadeUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+			cloudmadeAttribution = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+			cloudmade = L.tileLayer(cloudmadeUrl, {maxZoom: 17, attribution: cloudmadeAttribution}),
+			latlng = L.latLng(12.97696, 77.57395);
+			
+		var cloudmade4Url = 'http://3.maptile.lbs.ovi.com/maptiler/v2/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?app_id=XXX&token=XXX',
+			cloudmadeAttribution = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+			cloudmade4 = L.tileLayer(cloudmade4Url, {maxZoom: 17, attribution: cloudmadeAttribution}),
+			latlng = L.latLng(12.97696, 77.57395);
+			
+	
+			
+		var cloudmade2Url = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+			cloudmadeAttribution = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+			cloudmade2 = L.tileLayer(cloudmade2Url, {maxZoom: 17, attribution: cloudmadeAttribution}),
+			latlng = L.latLng(12.97696, 77.57395);
+			
+		var cloudmade3Url = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+			cloudmadeAttribution = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+			cloudmade3 = L.tileLayer(cloudmade3Url, {maxZoom: 17, attribution: cloudmadeAttribution}),
+			latlng = L.latLng(12.97696, 77.57395);
+			
+		var cloudmade5Url = 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+			cloudmadeAttribution = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+			cloudmade5 = L.tileLayer(cloudmade5Url, {maxZoom: 17, attribution: cloudmadeAttribution}),
+			latlng = L.latLng(12.97696, 77.57395);
+			
+
+
+		var map = L.map('map', {zoomControl: false, center: latlng, zoom: 12, layers: [cloudmade]} );
+
+		
+		var ps = new L.MarkerClusterGroup({	maxClusterRadius: 1,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false}).addTo(map);
+		 var psIcon = L.icon({ iconUrl: 'police_icons/ps.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_ps(psIcon, ps);
+		
+		var year2014 = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var yr14Icon = L.icon({ iconUrl: 'cubbon_police.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_filter("Eveteasing", yr14Icon, year2014);
+		 
+		 	var year2013 = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var yr13Icon = L.icon({ iconUrl: 'cubbon_police.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_filter("Roberry", yr13Icon, year2013);
+		
+		var Eveteasing = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var EveIcon = L.icon({ iconUrl: 'police_icons/black/abduction.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_filter("Eveteasing", EveIcon, Eveteasing);
+		 
+		 var Roberry = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var robIcon = L.icon({ iconUrl: 'police_icons/blue/robbery.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_filter("Roberry", robIcon, Roberry);
+		 
+		 var Assault = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var assIcon = L.icon({ iconUrl: 'police_icons/greenish/torture.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_filter("Assault", assIcon, Assault);
+		 
+		 var Thefts = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var theftIcon = L.icon({ iconUrl: 'police_icons/orange/theft.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_filter("Thefts", theftIcon, Thefts);
+		 
+		 var Accident = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var accIcon = L.icon({ iconUrl: 'police_icons/red/blast.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_filter("Accident", accIcon, Accident);
+		 
+		 var Murder = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var murIcon = L.icon({ iconUrl: 'police_icons/violet/crimescene.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate_filter("Murder", murIcon, Murder);
+	 
+		 var cubbon = new L.MarkerClusterGroup({	maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});
+		 var lightIcon = L.icon({ iconUrl: 'cubbon_police.png', iconSize: [24, 24],  popupAnchor: [4, 1]  });
+		 generate("CUBBON PARK", lightIcon, cubbon);
+	
+		 var ashok = new L.MarkerClusterGroup({maxClusterRadius: 5,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var ashIcon2 = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("ASHOK NAGAR", ashIcon2, ashok);
+		 
+		  var SJPARK = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var sjicon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("S.J.PARK", sjicon, SJPARK);
+		 
+		  var srnagar = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var sricon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("S.R.NAGAR", sricon, srnagar);
+		 
+		  var vivek = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var vivek_icon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("VIVEKNAGAR", vivek_icon, vivek);
+		 
+		  var high_grounds = new L.MarkerClusterGroup({maxClusterRadius: 5,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var hgicon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("HIGHGROUNDS", hgicon, high_grounds);
+		 
+		  var sadashiv = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var sada_icon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("SADASHIVA NAGAR", sada_icon, sadashiv);
+		 
+		  var seshadri = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var seshadri_icon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("SESHADRIPURAM", seshadri_icon, seshadri);
+		 
+		  var bharathi = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var bharati_icon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("BHARATHI NAGAR", bharati_icon, bharathi);
+		 
+		 var byappanahalli = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var byap_icon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("BYAPPANAHALLI", byap_icon, byappanahalli);
+		 
+		  var jeevanabima = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var jeevana_icon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("JEEVANABIMA NAGARA", jeevana_icon, jeevanabima);
+		 
+		  var hennur = new L.MarkerClusterGroup({maxClusterRadius: 20,spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: false});			
+		 var hennur_icon = L.icon({ iconUrl: 'ashok_police.jpg', iconSize: [24, 24], popupAnchor: [4, 1]   });
+		 generate("HENNUR", hennur_icon, hennur);
+		 
+	
+		
+			var baseMaps = {
+
+			"Topography" : cloudmade2,	
+			"Base Map": cloudmade,		
+		"Road map" :	cloudmade4,
+			"Grey image" : cloudmade5,
+		"Satellite image" : cloudmade3,
+		
+		
+		};
+		var  printProvider,
+			 printControl
+
+		var overlayMaps = {
+			"All PS Locations": ps,
+			"Cubbon Park": cubbon,
+			"Ashok Nagar": ashok,
+			"S J Park": SJPARK,
+			"S.R.Nagar": srnagar,
+			"VIVEKNAGAR": vivek,
+			"HIGHGROUNDS": high_grounds,
+			"SADASHIVA NAGAR": sadashiv,
+			"SESHADRIPURAM": seshadri,
+			"BHARATHI NAGAR": bharathi,
+			"BYAPPANAHALLI": byappanahalli,
+			"JEEVANABIMA NAGARA": jeevanabima,
+			"HENNUR": hennur				
+					};
+					
+				
+		L.control.layers(baseMaps, overlayMaps, {position: 'topleft'}).addTo(map);
+	
+		L.control.scale().addTo(map);
+			L.control.zoom({position: 'topright'}).addTo(map);
+	
+
+	  // Create the print provider, subscribing to print events
+	  printProvider = L.print.provider({
+	
+          capabilities: config,
+          method: 'GET',
+		  dpi: 254,
+		  outputFormat: 'pdf',
+		  customParams: {
+			  mapTitle: 'Crime Map',
+			  comment: 'Pdf print'
+		  }
+	  });
+
+	  // Create a print control with the configured provider and add to the map
+	  printControl = L.control.print({
+		  provider: printProvider, position:'topright'
+	  });
+
+	  map.addControl(printControl);
+
+	
+			var info = L.control({position: 'bottomright'});
+
+				info.onAdd = function (map) {
+				this._div = L.DomUtil.create('div', 'info');
+				this.update();
+				return this._div;
+				};
+
+				info.update = function (props) {
+				this._div.innerHTML = " <b>Developed by  </b> <br> <b>Geospatial Lab </b>"+"</br><img style='float:right; height:90px' src = 'iihs.png' ></img>" 
+				};
+				info.addTo(map);
+
+	</script>
+</body>
+</html>
